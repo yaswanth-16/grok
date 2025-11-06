@@ -17,8 +17,8 @@ export const getActiveUsers = (users) => {
 
 const activeUsers = getActiveUsers(users)
 
-const groupedByDepartment = (users) => {
-    console.log(`Group by dept : `)
+export const groupedByDepartment = (users) => {
+   
     const groupByDepartment = users.reduce((acc, user) => {
 
         if (!user) return acc;
@@ -30,7 +30,7 @@ const groupedByDepartment = (users) => {
         acc[dept].push(user)
         return acc
     }, {})
-    console.log(groupByDepartment)
+   return groupByDepartment
 }
 
 // groupedByDepartment(users)
@@ -49,7 +49,7 @@ const doAsyncWork = async (i) => {
     setTimeout(() => {
       console.log(`The msg shown from ${JSON.stringify(i,null,2)}`);
       resolve();
-    }, 3000);
+    }, 100);
    })
 }
 
@@ -58,4 +58,19 @@ async function forEachSerial(arr, doAsyncWork) {
     if (item) await doAsyncWork(item);
   }
 }
-// await forEachSerial(users, doAsyncWork);
+
+export const deepflatten=(arr , seen = new WeakSet())=>{
+return arr.reduce((acc,val)=>{
+    if(Array.isArray(val)) {
+        if(seen.has(val)) return acc;
+        seen.add(val)
+        return [...acc,...deepflatten(val,seen)]
+    }
+    return [...acc,val]
+},[])
+}
+
+console.log(deepflatten([1, [2, [3]], null]));
+(async() => {
+    await forEachSerial(users, doAsyncWork)
+})()
